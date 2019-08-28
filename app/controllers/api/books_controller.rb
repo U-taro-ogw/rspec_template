@@ -6,7 +6,6 @@ class Api::BooksController < ApplicationController
 
   def show
     book = Book.find_by(id: book_id_params)
-    p book
     unless book
       render json: { status: 404, message: 'Not Found' }
     else
