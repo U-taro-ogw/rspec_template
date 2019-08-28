@@ -37,4 +37,25 @@ RSpec.describe 'Books', type: :request do
       it_behaves_like '一覧検索成功'
     end
   end
+
+  describe 'GET api/books/:id' do
+    subject { proc { get api_book_path(book_id) } }
+    let!(:book) { create(:book) }
+
+    context '指定されたidのbookが存在する場合' do
+      let(:book_id) { book.id }
+      it 'bookを返却する' do
+        subject.call
+        expect(json_response[:book]).to eq book.to_json
+      end
+    end
+
+    context '指定されたidのbookが存在しない場合' do
+      let(:book_id) { book.id + 1 }
+      it '404エラーを返却する' do
+        subject.call
+        expect(json_response[:status]).to eq 404
+      end
+    end
+  end
 end
