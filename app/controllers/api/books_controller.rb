@@ -6,17 +6,18 @@ class Api::BooksController < ApplicationController
 
   def show
     book = Book.find_by(id: book_id_params)
-    unless book
-      render json: { status: 404, message: 'Not Found' }
-    else
-      render json: { status: 200, book: book.to_json }
-    end
-  end
+    return response_not_found unless book
 
+    response_ok book
+  end
 
   private
 
   def book_id_params
     params[:id]
   end
+
+  # def book_response(book)
+  #   { book: book }.to_json
+  # end
 end
