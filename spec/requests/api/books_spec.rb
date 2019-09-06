@@ -5,11 +5,6 @@ RSpec.describe 'Books', type: :request do
     subject { proc { get api_books_path } }
 
     shared_examples '一覧検索成功' do
-      it '検索成功のステータスを返却する' do
-        subject.call
-        expect(json_response[:status]).to eq 200
-      end
-
       it 'bookを全件返却する' do
         subject.call
         expect(json_response[:books].length).to eq books_count
@@ -21,6 +16,7 @@ RSpec.describe 'Books', type: :request do
         let!(:books) { create(:book) }
         let(:books_count) { 1 }
 
+        it_behaves_like 'ステータス200を返却する'
         it_behaves_like '一覧検索成功'
       end
 
@@ -28,12 +24,15 @@ RSpec.describe 'Books', type: :request do
         let!(:books) { (1..2).map{ |i| create(:book) } }
         let(:books_count) { books.length }
 
+        it_behaves_like 'ステータス200を返却する'
         it_behaves_like '一覧検索成功'
       end
     end
 
     context 'bookが0件の場合' do
       let(:books_count) { 0 }
+
+      it_behaves_like 'ステータス200を返却する'
       it_behaves_like '一覧検索成功'
     end
   end
@@ -44,18 +43,25 @@ RSpec.describe 'Books', type: :request do
 
     context '指定されたidのbookが存在する場合' do
       let(:book_id) { book.id }
+
+      it_behaves_like 'ステータス200を返却する'
+
       it 'bookを返却する' do
         subject.call
-        expect(json_response[:book]).to eq book.to_json
+        p json_response.class
+        puts json_response[:data][:id]
+
+        expect(1).to eq 2
+        # book.each do |element|
+        #   expect().to eq book.to_json
+        # end
       end
     end
 
     context '指定されたidのbookが存在しない場合' do
       let(:book_id) { book.id + 1 }
-      it '404エラーを返却する' do
-        subject.call
-        expect(json_response[:status]).to eq 404
-      end
+
+      it_behaves_like 'ステータス404を返却する'
     end
   end
 end
