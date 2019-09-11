@@ -21,7 +21,7 @@ RSpec.describe 'Books', type: :request do
       end
 
       context 'bookがn件の場合' do
-        let!(:books) { (1..2).map{ |i| create(:book) } }
+        let!(:books) { (1..2).map { create(:book) } }
         let(:books_count) { books.length }
 
         it_behaves_like 'ステータス200を返却する'
@@ -48,13 +48,17 @@ RSpec.describe 'Books', type: :request do
 
       it 'bookを返却する' do
         subject.call
-        p json_response.class
-        puts json_response[:data][:id]
 
-        expect(1).to eq 2
-        # book.each do |element|
-        #   expect().to eq book.to_json
-        # end
+        response = json_response[:data]
+        expect(response[:type]).to eq 'book'
+        expect(response[:id]).to eq book_id.to_s
+
+        response_attribute = json_response[:data][:attributes]
+        expect(response_attribute[:title]).to eq book.title
+        expect(response_attribute[:author]).to eq book.author
+        expect(response_attribute[:price]).to eq book.price
+        expect(response_attribute[:created_at]).to eq to_iso8601(book.created_at)
+        expect(response_attribute[:updated_at]).to eq to_iso8601(book.updated_at)
       end
     end
 
