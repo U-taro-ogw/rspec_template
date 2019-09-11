@@ -3,7 +3,7 @@ module ApiResponse
 
   # 200 Success
   def response_ok(response_body)
-    render status: 200, json: { data: response_body.to_json }
+    render status: 200, json: response_body
   end
 
   # 201 Created
@@ -25,11 +25,6 @@ module ApiResponse
   def response_not_found
     render status: 404, json: { status: 404, message: "Not Found" }
   end
-
-  # # 409 Conflict
-  # def response_conflict(class_name)
-  #   render status: 409, json: { status: 409, message: "#{class_name.capitalize} Conflict" }
-  # end
 
   # 500 Internal Server Error
   def response_internal_server_error

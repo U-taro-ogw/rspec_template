@@ -8,7 +8,7 @@ class Api::BooksController < ApplicationController
     book = Book.find_by(id: book_id_params)
     return response_not_found unless book
 
-    response_ok book
+    response_ok BookSerializer.new(book).serialized_json
   end
 
   private

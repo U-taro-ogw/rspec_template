@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Book, type: :model do
   it 'bookを登録する' do
-    expect{ create(:book) }.to change{ Book.count }.by(1)
+    expect { create(:book) }.to change { Book.count }.by(1)
   end
 
   describe 'バリデーション' do
@@ -14,7 +14,7 @@ RSpec.describe Book, type: :model do
         end
 
         it 'bookを登録しない' do
-          expect{ book.save }.to change{ Book.count }.by(0)
+          expect { book.save }.to change { Book.count }.by(0)
         end
       end
     end
@@ -27,7 +27,7 @@ RSpec.describe Book, type: :model do
         end
 
         it 'bookを登録しない' do
-          expect{ book.save }.to change{ Book.count }.by(0)
+          expect { book.save }.to change { Book.count }.by(0)
         end
       end
     end
@@ -40,7 +40,7 @@ RSpec.describe Book, type: :model do
         end
 
         it 'bookを登録しない' do
-          expect{ book.save }.to change{ Book.count }.by(0)
+          expect { book.save }.to change { Book.count }.by(0)
         end
       end
     end
