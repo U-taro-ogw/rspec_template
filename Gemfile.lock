@@ -64,6 +64,8 @@ GEM
       railties (>= 4.2.0)
     faker (2.1.2)
       i18n (>= 0.8)
+    fast_jsonapi (1.5)
+      activesupport (>= 4.2)
     ffi (1.11.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
@@ -189,6 +191,7 @@ DEPENDENCIES
   database_cleaner
   factory_bot_rails
   faker
+  fast_jsonapi
   listen (>= 3.0.5, < 3.2)
   mysql2 (>= 0.4.4, < 0.6.0)
   puma (~> 3.11)
