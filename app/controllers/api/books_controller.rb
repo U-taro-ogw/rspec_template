@@ -1,8 +1,10 @@
 module Api
   class BooksController < ApplicationController
     def index
-      books = Book.all.map(&:to_json)
-      render json: { status: 200, books: books }
+      books = Book.all
+      options = serialize_option(count: books.length)
+
+      response_ok BookSerializer.new(books, options).serialized_json
     end
 
     def show
