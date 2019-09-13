@@ -23,7 +23,7 @@ module ApiResponse
 
   # 404 Not Found
   def response_not_found
-    render status: 404, json: { status: 404, message: "Not Found" }
+    render status: 404, json: { status: 404, message: 'Not Found' }
   end
 
   # 500 Internal Server Error
