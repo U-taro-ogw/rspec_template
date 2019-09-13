@@ -7,14 +7,28 @@ RSpec.describe 'Books', type: :request do
     shared_examples '一覧検索成功' do
       it 'bookを全件返却する' do
         subject.call
-        expect(json_response[:books].length).to eq books_count
+        response = json_response[:data]
+        expect(response.length).to eq books_count
+
+        response.zip(books).each do |response_book, book|
+          expect(response_book[:type]).to eq 'book'
+          expect(response_book[:id]).to eq book.id.to_s
+
+          response_attribute = response_book[:attributes]
+          expect(response_attribute[:title]).to eq book.title
+          expect(response_attribute[:author]).to eq book.author
+          expect(response_attribute[:price]).to eq book.price
+          expect(response_attribute[:created_at]).to eq to_iso8601(book.created_at)
+          expect(response_attribute[:updated_at]).to eq to_iso8601(book.updated_at)
+        end
       end
     end
 
     context 'bookが1件以上存在する場合' do
+      let(:books_count) { books.length }
+
       context 'bookが1件の場合' do
-        let!(:books) { create(:book) }
-        let(:books_count) { 1 }
+        let!(:books) { [create(:book)] }
 
         it_behaves_like 'ステータス200を返却する'
         it_behaves_like '一覧検索成功'
@@ -22,7 +36,6 @@ RSpec.describe 'Books', type: :request do
 
       context 'bookがn件の場合' do
         let!(:books) { (1..2).map { create(:book) } }
-        let(:books_count) { books.length }
 
         it_behaves_like 'ステータス200を返却する'
         it_behaves_like '一覧検索成功'
@@ -30,6 +43,7 @@ RSpec.describe 'Books', type: :request do
     end
 
     context 'bookが0件の場合' do
+      let(:books) { [] }
       let(:books_count) { 0 }
 
       it_behaves_like 'ステータス200を返却する'
@@ -53,7 +67,7 @@ RSpec.describe 'Books', type: :request do
         expect(response[:type]).to eq 'book'
         expect(response[:id]).to eq book_id.to_s
 
-        response_attribute = json_response[:data][:attributes]
+        response_attribute = response[:attributes]
         expect(response_attribute[:title]).to eq book.title
         expect(response_attribute[:author]).to eq book.author
         expect(response_attribute[:price]).to eq book.price
