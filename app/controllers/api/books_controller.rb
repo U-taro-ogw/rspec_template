@@ -14,10 +14,19 @@ module Api
       response_ok BookSerializer.new(book).serialized_json
     end
 
+    def create
+      books = books_param[:books].map { |book_param| Book.create(book_param) }
+      response_created BookSerializer.new(books).serialized_json
+    end
+
     private
 
     def book_id_params
       params[:id]
+    end
+
+    def books_param
+      params.permit(books: %i[title author price])
     end
   end
 end
