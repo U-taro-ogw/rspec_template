@@ -8,7 +8,7 @@ module ApiResponse
 
   # 201 Created
   def response_created(resources)
-    render status: 201, json: { status: 201, location: resources }
+    render status: 201, json: resources
   end
 
   # 400 Bad Request
