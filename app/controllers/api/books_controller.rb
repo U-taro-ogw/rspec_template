@@ -19,6 +19,10 @@ module Api
       response_created BookSerializer.new(books).serialized_json
     end
 
+    def update
+
+    end
+
     private
 
     def book_id_params

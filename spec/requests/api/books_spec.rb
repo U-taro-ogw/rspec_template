@@ -144,4 +144,17 @@ RSpec.describe 'Books', type: :request do
       end
     end
   end
+
+  describe 'PUT api/books/:id' do
+    subject { proc { put api_book_path(book_id), params: put_params } }
+    let(:put_params) { { book: book_param } }
+    let(:book_param) { { title: 'update_title', author: 'update_author', price: 200 } }
+
+    let!(:book) { create(:book) }
+
+    context '指定されたidのbookが存在する場合' do
+      let(:book_id) { bookd.id }
+
+    end
+  end
 end
