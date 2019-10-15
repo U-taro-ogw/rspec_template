@@ -19,10 +19,22 @@ module Api
       response_created BookSerializer.new(books).serialized_json
     end
 
+    def update
+      book = Book.find_by(id: book_id_params)
+      return response_not_found unless book
+
+      book.update(book_param[:book])
+      response_ok BookSerializer.new(book).serialized_json
+    end
+
     private
 
     def book_id_params
       params[:id]
+    end
+
+    def book_param
+      params.permit(book: %i[title author price])
     end
 
     def books_param

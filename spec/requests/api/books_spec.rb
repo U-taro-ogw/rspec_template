@@ -144,4 +144,30 @@ RSpec.describe 'Books', type: :request do
       end
     end
   end
+
+  describe 'PUT api/books/:id' do
+    subject { proc { put api_book_path(book_id), params: put_params } }
+    let(:put_params) { { book: book_param } }
+    let(:book_param) { { title: 'update_title', author: 'update_author', price: 200 } }
+
+    let!(:book) { create(:book) }
+
+    context '指定されたidのbookが存在する場合' do
+      let(:book_id) { book.id }
+
+      it '指定されたidのbookを更新する' do
+        subject.call
+        book = Book.find(book_id)
+        expect(book.title).to eq(book_param[:title])
+        expect(book.author).to eq(book_param[:author])
+        expect(book.price).to eq(book_param[:price])
+      end
+    end
+
+    context '指定されたidのbookが存在しない場合' do
+      let(:book_id) { book.id + 1 }
+
+      it_behaves_like 'ステータス404を返却する'
+    end
+  end
 end
