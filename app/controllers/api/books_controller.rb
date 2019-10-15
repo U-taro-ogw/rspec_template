@@ -27,6 +27,14 @@ module Api
       response_ok BookSerializer.new(book).serialized_json
     end
 
+    def destroy
+      book = Book.find_by(id: book_id_params)
+      return response_not_found unless book
+
+      book.destroy
+      response_ok BookSerializer.new(book).serialized_json
+    end
+
     private
 
     def book_id_params
