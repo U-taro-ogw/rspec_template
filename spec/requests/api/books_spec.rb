@@ -34,7 +34,7 @@ RSpec.describe 'Books', type: :request do
         it_behaves_like '一覧検索成功'
       end
 
-      context 'bookがn件の場合' do
+      context 'bookが2件の場合' do
         let!(:books) { (1..2).map { create(:book) } }
 
         it_behaves_like 'ステータス200を返却する'
@@ -176,6 +176,8 @@ RSpec.describe 'Books', type: :request do
     context '指定されたidのbookが存在する場合' do
       let(:book_id) { book.id }
 
+      it_behaves_like 'ステータス200を返却する'
+
       it 'bookを削除する' do
         expect { subject.call }.to change { Book.count }.by(-1)
       end
@@ -189,6 +191,65 @@ RSpec.describe 'Books', type: :request do
     context '指定されたidのbookが存在しない場合' do
       let(:book_id) { book.id + 1}
       it_behaves_like 'ステータス404を返却する'
+    end
+  end
+
+  describe 'POST api/books/delete_selected' do
+    subject { proc { post delete_selected_api_books_path, params: post_params } }
+    let(:post_params) { { ids: delete_ids } }
+
+    shared_examples 'パラメータのidの件数分削除する' do
+      it_behaves_like 'ステータス200を返却する'
+
+      it 'パラメータのidの件数分削除する' do
+        expect { subject.call }.to change { Book.count }.by(-delete_ids.length)
+      end
+
+      it 'パラメータのidのレコードを削除する' do
+        subject.call
+        result = Book.where(id: delete_ids)
+        expect(result).to be_empty
+      end
+    end
+
+    context '指定されたレコードが存在する場合' do
+      context '1件の場合' do
+        let!(:book) { create(:book) }
+        let(:delete_ids) { [ book.id ] }
+
+        it_behaves_like 'パラメータのidの件数分削除する'
+      end
+
+      context '2件の場合' do
+        let!(:books) { (1..2).map { |i| create(:book, price: i) } }
+        let(:delete_ids) { books.map(&:id) }
+
+        it_behaves_like 'パラメータのidの件数分削除する'
+      end
+    end
+
+    context '指定されたレコードが一部存在しない場合' do
+      context '1件存在し、1件存在しない場合' do
+        let!(:books) { (1..2).map { |i| create(:book, price: i) } }
+        let(:delete_ids) { [ books.last.id, books.last.id + 1 ] }
+
+        it_behaves_like 'ステータス200を返却する'
+
+        it '存在するレコードのみ削除する' do
+          expect { subject.call }.to change { Book.count }.by(-1)
+        end
+      end
+    end
+
+    context '指定されたレコードが存在しない場合' do
+      let!(:book) { create(:book) }
+      let(:delete_ids) { [ book.id + 1 ] }
+
+      it_behaves_like 'ステータス200を返却する'
+
+      it '削除しない' do
+        expect { subject.call }.to change { Book.count }.by(0)
+      end
     end
   end
 end

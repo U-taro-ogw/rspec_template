@@ -35,6 +35,12 @@ module Api
       response_ok BookSerializer.new(book).serialized_json
     end
 
+    def delete_selected
+      books = Book.where(id: book_ids_param)
+      books.destroy_all
+      response_ok BookSerializer.new(books).serialized_json
+    end
+
     private
 
     def book_id_params
@@ -47,6 +53,10 @@ module Api
 
     def books_param
       params.permit(books: %i[title author price])
+    end
+
+    def book_ids_param
+      params[:ids]
     end
   end
 end
