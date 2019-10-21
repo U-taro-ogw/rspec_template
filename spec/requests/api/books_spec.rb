@@ -149,12 +149,10 @@ RSpec.describe 'Books', type: :request do
     subject { proc { put api_book_path(book_id), params: put_params } }
     let(:put_params) { { book: book_param } }
     let(:book_param) { { title: 'update_title', author: 'update_author', price: 200 } }
-
     let!(:book) { create(:book) }
 
     context '指定されたidのbookが存在する場合' do
       let(:book_id) { book.id }
-
       it '指定されたidのbookを更新する' do
         subject.call
         book = Book.find(book_id)
@@ -167,6 +165,29 @@ RSpec.describe 'Books', type: :request do
     context '指定されたidのbookが存在しない場合' do
       let(:book_id) { book.id + 1 }
 
+      it_behaves_like 'ステータス404を返却する'
+    end
+  end
+
+  describe 'DELETE api/books/:id' do
+    subject { proc { delete api_book_path(book_id) } }
+    let!(:book) { create(:book) }
+
+    context '指定されたidのbookが存在する場合' do
+      let(:book_id) { book.id }
+
+      it 'bookを削除する' do
+        expect { subject.call }.to change { Book.count }.by(-1)
+      end
+
+      it '指定されたidのbookを削除する' do
+        subject.call
+        expect(Book.find_by(id: book_id)).to be(nil)
+      end
+    end
+
+    context '指定されたidのbookが存在しない場合' do
+      let(:book_id) { book.id + 1}
       it_behaves_like 'ステータス404を返却する'
     end
   end
