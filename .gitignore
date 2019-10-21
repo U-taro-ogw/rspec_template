@@ -24,3 +24,6 @@
 
 # db-data
 /db/mysql_data/
+
+# ide
+.idea
