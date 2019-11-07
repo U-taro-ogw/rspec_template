@@ -5,7 +5,8 @@ class CreateBooks < ActiveRecord::Migration[5.2]
       t.string :author, null: false
       t.integer :price, null: false
 
-      t.timestamps
+      t.datetime :created_at, default: -> { 'NOW()' }
+      t.datetime :updated_at, default: -> { 'NOW()' }
     end
   end
 end
