@@ -16,8 +16,8 @@ ActiveRecord::Schema.define(version: 2019_08_14_032100) do
     t.string "title", null: false
     t.string "author", null: false
     t.integer "price", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }
   end
 
 end
