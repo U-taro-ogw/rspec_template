@@ -10,7 +10,7 @@ RSpec.describe Book, type: :model do
       context 'nullの場合' do
         let!(:book) { build(:book, title: nil) }
         it 'バリデーションエラーを発生させる' do
-          expect(book).not_to be_valid
+          expect(book).to be_invalid
         end
 
         it 'bookを登録しない' do
@@ -23,7 +23,7 @@ RSpec.describe Book, type: :model do
       context 'nullの場合' do
         let!(:book) { build(:book, author: nil) }
         it 'バリデーションエラーを発生させる' do
-          expect(book).not_to be_valid
+          expect(book).to be_invalid
         end
 
         it 'bookを登録しない' do
@@ -36,7 +36,7 @@ RSpec.describe Book, type: :model do
       context 'nullの場合' do
         let!(:book) { build(:book, price: nil) }
         it 'バリデーションエラーを発生させる' do
-          expect(book).not_to be_valid
+          expect(book).to be_invalid
         end
 
         it 'bookを登録しない' do
