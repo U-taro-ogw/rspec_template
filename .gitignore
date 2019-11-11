@@ -22,8 +22,8 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-# db-data
-/db/mysql_data/
-
 # ide
 .idea
+/db_data/mysql_data/
+.generators
+.rakeTasks
