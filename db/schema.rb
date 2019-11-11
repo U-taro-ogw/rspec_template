@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_14_032100) do
+ActiveRecord::Schema.define(version: 2019_10_30_100154) do
 
   create_table "books", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title", null: false
@@ -20,4 +20,13 @@ ActiveRecord::Schema.define(version: 2019_08_14_032100) do
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }
   end
 
+  create_table "comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "book_id", null: false
+    t.string "text", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_comments_on_book_id"
+  end
+
+  add_foreign_key "comments", "books"
 end
