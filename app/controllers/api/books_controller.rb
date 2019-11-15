@@ -15,9 +15,7 @@ module Api
     end
 
     def create
-      book_ids = Book.all.ids
-      Book.insert_all(books_param[:books])
-      books = Book.where(id: (book_ids - Book.all.ids))
+      books = Book.bulk_insert(books_param[:books])
       response_created BookSerializer.new(books).serialized_json
     end
 
