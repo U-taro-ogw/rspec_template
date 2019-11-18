@@ -1,21 +1,30 @@
 version: '3'
 services:
   web:
-    build: .
+    build: ./rails_api
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
     ports:
       - "3000:3000"
     volumes:
-      - .:/usr/src/rspec_template
+      - ./rails_api:/usr/src/rspec_template
     links:
       - db
 
   db:
     image: mysql:5.7
     volumes:
-      - ./db_data/mysql_data:/var/lib/mysql
+      - ./rails_api/db_data/mysql_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: root
     ports:
       - "3306:3306"
+
+  dummy_api:
+    build: ./dummy_api
+    container_name: test-json-server
+    ports:
+      - '3001:3001'
+    volumes:
+      - ./dummy_api/db.json:/data/db.json
+    command: json-server --watch db.json --host 0.0.0.0 -p 3001

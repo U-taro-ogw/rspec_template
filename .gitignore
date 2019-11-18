@@ -5,25 +5,28 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore bundler config.
-/.bundle
+rails_api/.bundle
 
 # Ignore all logfiles and tempfiles.
-/log/*
-/tmp/*
-!/log/.keep
-!/tmp/.keep
+rails_api/log/*
+rails_api/tmp/*
+!rails_api/log/.keep
+!rails_api/tmp/.keep
+
 
 # Ignore uploaded files in development
-/storage/*
-!/storage/.keep
+rails_api/storage/*
+!rails_api/storage/.keep
 
 .byebug_history
 
 # Ignore master key for decrypting credentials and more.
-/config/master.key
+rails_api/config/master.key
 
 # ide
 .idea
-/db_data/mysql_data/
-.generators
-.rakeTasks
+rails_api/db_data/mysql_data/
+rails_api/.generators
+rails_api/.rakeTasks
+
+.DS_Store
