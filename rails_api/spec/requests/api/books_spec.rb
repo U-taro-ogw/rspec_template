@@ -245,4 +245,16 @@ RSpec.describe 'Books', type: :request do
       end
     end
   end
+
+  describe 'GET api/books/fetch_api' do
+    subject { proc { get fetch_api_api_books } }
+
+    context 'プログラミング言語一覧取得に成功した場合' do
+
+    end
+
+    context 'プログラミング言語一覧に失敗した場合' do
+      
+    end
+  end
 end

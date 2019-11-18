@@ -41,6 +41,10 @@ module Api
       response_ok BookSerializer.new(books).serialized_json
     end
 
+    def fetch_api
+
+    end
+
     private
 
     def book_id_params
