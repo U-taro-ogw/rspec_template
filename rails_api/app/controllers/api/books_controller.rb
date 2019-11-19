@@ -42,7 +42,15 @@ module Api
     end
 
     def fetch_api
+      uri = URI.parse(ENV["DUMMY_API_URL"] + '/programming_languages')
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = uri.scheme === "https"
 
+      headers = { "Content-Type" => "application/json" }
+      response = http.get(uri.path, headers)
+
+      p response.code # status code
+      p response.body # response body
     end
 
     private
