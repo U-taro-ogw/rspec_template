@@ -42,7 +42,7 @@ module Api
     end
 
     def fetch_api
-
+      get_programming_languages
     end
 
     private
