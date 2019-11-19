@@ -1,7 +1,9 @@
-FROM node:10.15.0
+FROM node:12.6-alpine
 
-RUN npm install -g json-server
+WORKDIR /dummy_api
 
-WORKDIR /data
+RUN apk update && npm install -g json-server
 
-EXPOSE 3001
+EXPOSE 3000
+
+CMD ["/bin/ash"]
