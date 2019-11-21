@@ -249,8 +249,21 @@ RSpec.describe 'Books', type: :request do
   describe 'GET api/books/fetch_api' do
     subject { proc { get fetch_api_api_books_path } }
 
+    let(:programming_languages_url) { ENV['DUMMY_API_URL'] + '/programming_languages' }
+    let(:api_response) { load_json('programming_languages/index/success.json') }
+
+    before do
+      stub_request(
+          :get,
+          programming_languages_url
+      ).to_return(
+          body: api_response,
+          status: 200
+      )
+    end
+
     context 'プログラミング言語一覧取得に成功した場合' do
-      it 'hod' do
+      it 'プログラミング言語一覧を返却する' do
         subject.call
       end
     end
