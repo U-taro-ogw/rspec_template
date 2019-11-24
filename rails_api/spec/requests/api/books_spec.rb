@@ -250,21 +250,30 @@ RSpec.describe 'Books', type: :request do
     subject { proc { get fetch_api_api_books_path } }
 
     let(:programming_languages_url) { ENV['DUMMY_API_URL'] + '/programming_languages' }
-    let(:api_response) { load_json('programming_languages/index/success.json') }
+    let(:stub_response) { load_json('programming_languages/index/success.json') }
 
-    before do
-      stub_request(
-          :get,
-          programming_languages_url
-      ).to_return(
-          body: api_response,
-          status: 200
-      )
-    end
+    before { stub_request(:get, programming_languages_url).to_return(status: 200, body: stub_response) }
 
     context 'プログラミング言語一覧取得に成功した場合' do
       it 'プログラミング言語一覧を返却する' do
         subject.call
+        response_data = json_response[:data]
+        puts stub_response
+        puts response_data
+
+        # expect(response_data.length).to eq books_count
+
+        # response_data.zip(books).each do |response_book, book|
+        #   expect(response_book[:type]).to eq 'book'
+        #   expect(response_book[:id]).to eq book.id.to_s
+        #
+        #   response_attribute = response_book[:attributes]
+        #   expect(response_attribute[:title]).to eq book.title
+        #   expect(response_attribute[:author]).to eq book.author
+        #   expect(response_attribute[:price]).to eq book.price
+        #   expect(response_attribute[:created_at]).to eq to_iso8601(book.created_at)
+        #   expect(response_attribute[:updated_at]).to eq to_iso8601(book.updated_at)
+        # end
       end
     end
 
