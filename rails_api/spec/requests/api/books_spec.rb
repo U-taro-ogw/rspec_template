@@ -252,8 +252,6 @@ RSpec.describe 'Books', type: :request do
     subject { proc { get fetch_api_api_books_path } }
 
     let(:book_text_url) { ENV['DUMMY_API_URL'] + '/book_text' }
-    let!(:books) { (1..2).map { |i| create(:book, title: "title_#{i}") } }
-
     context 'book本文一覧取得に成功した場合' do
       before do
         stub_request(:get, book_text_url).to_return(
@@ -262,6 +260,7 @@ RSpec.describe 'Books', type: :request do
         )
       end
 
+      let!(:books) { (1..2).map { |i| create(:book, title: "title_#{i}") } }
       let(:stub_response) { { book_text: Book.all.ids.map { |book_id| { id: book_id, text: "id => #{book_id}の本文"} } } }
 
       it 'bookにbook本文を付与したbook一覧を返却する' do
@@ -277,8 +276,18 @@ RSpec.describe 'Books', type: :request do
       end
     end
 
-    context 'book本文一覧に失敗した場合' do
+    context 'book本文一覧取得に失敗した場合' do
+      before do
+        stub_request(:get, book_text_url).to_return(
+            status: 400,
+            body: "Bad Request"
+        )
+      end
 
+      it '400エラーを返却する' do
+        subject.call
+        expect(1).to eq 2
+      end
     end
   end
 end
