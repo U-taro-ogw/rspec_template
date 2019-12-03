@@ -42,7 +42,12 @@ module Api
     end
 
     def fetch_api
-      render status: 200, json: { data: fetch_programming_languages }
+      books_text = fetch_book_text
+      merge_text(books_text)
+
+      # response_ok BookSerializer.new(books).serialized_json
+
+      render status: 200, json: { data: merge_text(books_text) }
     end
 
     private
@@ -61,6 +66,11 @@ module Api
 
     def book_ids_param
       params[:ids]
+    end
+
+    def merge_text(books_text)
+      books = Book.all
+      books.map { |book|  book.attributes.merge( books_text.find { |text| text[:id] == book.id } ) }
     end
   end
 end
