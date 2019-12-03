@@ -253,7 +253,6 @@ RSpec.describe 'Books', type: :request do
 
     let(:book_text_url) { ENV['DUMMY_API_URL'] + '/book_text' }
     let!(:books) { (1..2).map { |i| create(:book, title: "title_#{i}") } }
-    let(:stub_response) { { book_text: Book.all.ids.map { |book_id| { id: book_id, text: "id => #{book_id}の本文"} } } }
 
     context 'book本文一覧取得に成功した場合' do
       before do
@@ -262,6 +261,8 @@ RSpec.describe 'Books', type: :request do
             body: stub_response.to_json
         )
       end
+
+      let(:stub_response) { { book_text: Book.all.ids.map { |book_id| { id: book_id, text: "id => #{book_id}の本文"} } } }
 
       it 'bookにbook本文を付与したbook一覧を返却する' do
         subject.call
