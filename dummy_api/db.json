@@ -1,8 +1,8 @@
 {
   "book_text": {
     "book_text": [
-      {"id": 1, "name": "C"},
-      {"id": 2, "name": "Java"}
+      {"id": 1, "text": "id:1のbookの本文です。"},
+      {"id": 2, "text": "id:2のbookの本文です。"}
     ]
   }
 }

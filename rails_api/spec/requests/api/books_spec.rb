@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Books', type: :request do
+  before { WebMock.enable! }
+
   describe 'GET api/books' do
     subject { proc { get api_books_path } }
 
@@ -249,38 +251,32 @@ RSpec.describe 'Books', type: :request do
   describe 'GET api/books/fetch_api' do
     subject { proc { get fetch_api_api_books_path } }
 
-    let(:programming_languages_url) { ENV['DUMMY_API_URL'] + '/book_text' }
-    let(:stub_response) { load_json('programming_languages/index/success.json') }
+    let(:book_text_url) { ENV['DUMMY_API_URL'] + '/book_text' }
+    let!(:books) { (1..2).map { |i| create(:book, title: "title_#{i}") } }
+    let(:stub_response) { { book_text: Book.all.ids.map { |book_id| { id: book_id, text: "id => #{book_id}の本文"} } } }
 
+    context 'book本文一覧取得に成功した場合' do
+      before do
+        stub_request(:get, book_text_url).to_return(
+            status: 200,
+            body: stub_response.to_json
+        )
+      end
 
-
-    context 'プログラミング言語一覧取得に成功した場合' do
-      before { stub_request(:get, programming_languages_url).to_return(status: 200, body: stub_response) }
-
-      it 'プログラミング言語一覧を返却する' do
+      it 'bookにbook本文を付与したbook一覧を返却する' do
         subject.call
         response_data = json_response[:data]
-        puts stub_response
-        puts json_response
-        puts response_data
 
-        # expect(response_data.length).to eq books_count
-
-        # response_data.zip(books).each do |response_book, book|
-        #   expect(response_book[:type]).to eq 'book'
-        #   expect(response_book[:id]).to eq book.id.to_s
-        #
-        #   response_attribute = response_book[:attributes]
-        #   expect(response_attribute[:title]).to eq book.title
-        #   expect(response_attribute[:author]).to eq book.author
-        #   expect(response_attribute[:price]).to eq book.price
-        #   expect(response_attribute[:created_at]).to eq to_iso8601(book.created_at)
-        #   expect(response_attribute[:updated_at]).to eq to_iso8601(book.updated_at)
-        # end
+        response_data.zip(books, stub_response[:book_text]).each do |response, book, book_text|
+          expect(response[:id]).to eq book.id
+          expect(response[:author]).to eq book.author
+          expect(response[:price]).to eq book.price
+          expect(response[:text]).to eq book_text[:text]
+        end
       end
     end
 
-    context 'プログラミング言語一覧に失敗した場合' do
+    context 'book本文一覧に失敗した場合' do
 
     end
   end
