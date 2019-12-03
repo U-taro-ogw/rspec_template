@@ -1,10 +1,5 @@
 module RequestSpecHelper
   def json_response
-    puts "-----------"
-    puts response.class
-    puts response.body
-    puts response.body.class
-    puts "-----------"
     JSON.parse(response.body).with_indifferent_access
   end
 
