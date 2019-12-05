@@ -43,7 +43,7 @@ module Api
 
     def fetch_api
       books_text = fetch_book_text
-      merge_text(books_text)
+      # merge_text(books_text)
 
       # response_ok BookSerializer.new(books).serialized_json
 
