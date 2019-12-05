@@ -261,7 +261,7 @@ RSpec.describe 'Books', type: :request do
       end
 
       let!(:books) { (1..2).map { |i| create(:book, title: "title_#{i}") } }
-      let(:stub_response) { { book_text: Book.all.ids.map { |book_id| { id: book_id, text: "id => #{book_id}の本文"} } } }
+      let(:stub_response) { { book_text: books.map { |book| { id: book.id, text: "id => #{book.id}の本文"} } } }
 
       it 'bookにbook本文を付与したbook一覧を返却する' do
         subject.call
