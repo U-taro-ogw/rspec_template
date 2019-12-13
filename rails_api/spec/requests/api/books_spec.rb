@@ -284,10 +284,7 @@ RSpec.describe 'Books', type: :request do
         )
       end
 
-      it '400エラーを返却する' do
-        subject.call
-        expect(1).to eq 2
-      end
+      it_behaves_like 'ステータス404を返却する'
     end
   end
 end
