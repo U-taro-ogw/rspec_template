@@ -3,8 +3,7 @@ class ApplicationController < ActionController::API
   include ApiRequestable
   include SerializerOptions
 
-  # TODO catchする
-  rescue_from StandardError, with: :render_404
+  rescue_from CustomErrors::NotFoundError, with: :render_404
 
   private
 
