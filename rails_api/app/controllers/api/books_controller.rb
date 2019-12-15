@@ -70,7 +70,7 @@ module Api
 
     def merge_text(books_text)
       books = Book.all
-      books.map { |book|  book.attributes.merge( books_text.find { |text| text[:id] == book.id } ) }
+      books.map { |book| book.attributes.merge(books_text.find { |text| text[:id] == book.id }) }
     end
   end
 end

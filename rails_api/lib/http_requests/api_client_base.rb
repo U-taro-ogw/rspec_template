@@ -1,5 +1,7 @@
 module HttpRequests
   class ApiClientBase
+    include Raisable
+
     attr_accessor :api_url,
                   :header,
                   :path

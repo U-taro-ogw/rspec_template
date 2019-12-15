@@ -9,9 +9,9 @@ module HttpRequests
       def fetch_index
         uri = generate_uri
         response = get_request(uri)
-        raise StandardError unless response.code.to_i == 200
+        raise raise_not_found unless response.code.to_i == 200
 
-        JSON.parse(response.body)["book_text"].map(&:with_indifferent_access)
+        JSON.parse(response.body)['book_text'].map(&:with_indifferent_access)
       end
     end
   end
