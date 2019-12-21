@@ -9,7 +9,7 @@ module HttpRequests
       def fetch_index
         uri = generate_uri
         response = get_request(uri)
-        raise raise_not_found unless response.code.to_i == 200
+        raise_not_found if response.code.to_i == 404
 
         JSON.parse(response.body)['book_text'].map(&:with_indifferent_access)
       end

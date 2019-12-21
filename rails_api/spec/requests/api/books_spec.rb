@@ -279,8 +279,8 @@ RSpec.describe 'Books', type: :request do
     context 'book本文一覧取得に失敗した場合' do
       before do
         stub_request(:get, book_text_url).to_return(
-            status: 400,
-            body: "Bad Request"
+            status: 404,
+            body: "Not Found"
         )
       end
 
