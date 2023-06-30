@@ -11,7 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2019_10_30_100154) do
-  create_table "books", charset: "utf8", force: :cascade do |t|
+  create_table "books", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "title", null: false
     t.string "author", null: false
     t.integer "price", null: false
@@ -19,7 +19,7 @@ ActiveRecord::Schema[7.0].define(version: 2019_10_30_100154) do
     t.datetime "updated_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }
   end
 
-  create_table "comments", charset: "utf8", force: :cascade do |t|
+  create_table "comments", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "book_id", null: false
     t.string "text", null: false
     t.datetime "created_at", precision: nil, null: false
