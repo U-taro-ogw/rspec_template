@@ -10,7 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2019_10_30_100154) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_02_114305) do
+  create_table "authors", charset: "utf8", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "books", charset: "utf8", force: :cascade do |t|
     t.string "title", null: false
     t.string "author", null: false
@@ -27,5 +32,21 @@ ActiveRecord::Schema[7.0].define(version: 2019_10_30_100154) do
     t.index ["book_id"], name: "index_comments_on_book_id"
   end
 
+  create_table "user_profiles", charset: "utf8", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "self_introduction", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_profiles_on_user_id"
+  end
+
+  create_table "users", charset: "utf8", force: :cascade do |t|
+    t.string "name"
+    t.integer "age"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "comments", "books"
+  add_foreign_key "user_profiles", "users"
 end
